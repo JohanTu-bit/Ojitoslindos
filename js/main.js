@@ -5,7 +5,7 @@
      Configuration
      ------------------------------------------------------------------------ */
   const CONFIG = Object.freeze({
-    audioSrc: 'assets/musica.mp3',
+    audioSrc: 'https://johantu-bit.github.io/Ojitoslindos/assets/musica.mp3.mp3',
     volume: 0.9,
     fadeMs: 1200,
 
