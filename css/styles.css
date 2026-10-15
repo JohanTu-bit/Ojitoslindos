@@ -1,0 +1,270 @@
+/* ==========================================================================
+   Design tokens
+   ========================================================================== */
+:root {
+  --color-roast: #1d130e;
+  --color-roast-light: #2b1b13;
+  --color-porcelain: #e8edee;
+  --color-cream: #efe3d0;
+  --color-caramel: #d9a066;
+  --color-muted: #a8917b;
+
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+
+  --cup-size: min(82vw, 300px);
+  --spin-duration: 10s;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding:
+    max(2.25rem, env(safe-area-inset-top))
+    1.625rem
+    max(2.75rem, env(safe-area-inset-bottom));
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 18%, var(--color-roast-light) 0%, transparent 72%),
+    var(--color-roast);
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   Layout
+   ========================================================================== */
+.page {
+  width: 100%;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: fade-in 1.6s ease both;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ==========================================================================
+   Cup (coffee surface doubles as a record)
+   ========================================================================== */
+.cup {
+  all: unset;
+  position: relative;
+  width: var(--cup-size);
+  aspect-ratio: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cup:focus-visible {
+  outline: 2px solid var(--color-caramel);
+  outline-offset: 8px;
+  border-radius: 50%;
+}
+
+.cup__saucer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #f6f9f9 0%, var(--color-porcelain) 55%, #c5cdd0 100%);
+  box-shadow:
+    0 26px 50px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 6px rgba(255, 255, 255, 0.35);
+}
+
+.cup__handle {
+  position: absolute;
+  top: 40%;
+  right: 1%;
+  width: 12%;
+  height: 20%;
+  border-radius: 0 60% 60% 0;
+  background: linear-gradient(90deg, #d3dadd, #f1f5f6);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+}
+
+.cup__body {
+  position: absolute;
+  inset: 9%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 30%, #ffffff 0%, var(--color-porcelain) 60%, #b8c1c5 100%);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+}
+
+.cup__coffee {
+  position: absolute;
+  inset: 6%;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #2a160b;
+  box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.7);
+}
+
+/* Fixed light reflection: stays still while the disc rotates */
+.cup__coffee::after {
+  content: '';
+  position: absolute;
+  top: 14%;
+  left: 20%;
+  width: 24%;
+  height: 12%;
+  border-radius: 50%;
+  background: rgba(255, 244, 228, 0.38);
+  filter: blur(5px);
+  transform: rotate(-28deg);
+  pointer-events: none;
+}
+
+.cup__disc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(circle at center, transparent 0 3px, rgba(255, 232, 205, 0.07) 3px 4px),
+    radial-gradient(circle at center, #3b2013 0 28%, #6a3a1c 40%, #8f5a2d 58%, #5e3319 78%, #2a160b 100%);
+  animation: spin var(--spin-duration) linear infinite;
+  animation-play-state: paused;
+}
+
+.is-playing .cup__disc {
+  animation-play-state: running;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Center photo. Falls back to a caramel gradient if the image is missing. */
+.cup__label {
+  position: absolute;
+  inset: 27%;
+  border-radius: 50%;
+  background:
+    url('../assets/foto.jpg') center / cover no-repeat,
+    linear-gradient(135deg, #d9a066, #8f5a2d);
+  box-shadow:
+    0 0 0 3px rgba(239, 227, 208, 0.55),
+    0 0 0 7px rgba(20, 10, 5, 0.55);
+}
+
+.cup__bean {
+  position: absolute;
+  width: 8%;
+  height: 5.4%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #5a3420, #24130b);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
+}
+
+.cup__bean::after {
+  content: '';
+  position: absolute;
+  top: 47%;
+  right: 12%;
+  left: 12%;
+  height: 1.5px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.65);
+  transform: rotate(-12deg);
+}
+
+.cup__bean--one {
+  top: 84%;
+  left: 5%;
+  transform: rotate(32deg);
+}
+
+.cup__bean--two {
+  top: 89%;
+  left: 11%;
+  transform: rotate(-18deg);
+}
+
+.hint {
+  min-height: 1.4em;
+  margin-top: 1.625rem;
+  color: var(--color-muted);
+  font-size: 0.82rem;
+}
+
+/* ==========================================================================
+   Typography & content
+   ========================================================================== */
+.title {
+  margin-top: 2rem;
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 8.4vw, 2.5rem);
+  font-weight: 300;
+  font-optical-sizing: auto;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.title em {
+  color: var(--color-caramel);
+}
+
+.message {
+  margin-top: 1.375rem;
+  font-family: var(--font-serif);
+  font-size: 1.12rem;
+  font-weight: 300;
+  line-height: 1.65;
+}
+
+.message p + p {
+  margin-top: 0.875rem;
+}
+
+.message__soft {
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+.invitation {
+  width: 100%;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(239, 227, 208, 0.14);
+  color: var(--color-muted);
+  font-size: 0.92rem;
+}
+
+.reply {
+  margin-top: 1.125rem;
+  color: var(--color-caramel);
+  font-size: 0.88rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.reply:focus-visible {
+  outline: 2px solid var(--color-caramel);
+  outline-offset: 4px;
+}
+
+/* ==========================================================================
+   Accessibility
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .page { animation: none; }
+  .cup__disc { animation-duration: 40s; }
+}
